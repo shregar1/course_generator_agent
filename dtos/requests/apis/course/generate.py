@@ -4,5 +4,6 @@ from pydantic import BaseModel
 class GenerateCourseRequestDTO(BaseModel):
 
     reference_number: str
-    sender_urn: str
-    receiver_urn: str
+    brief: str
+    target_audience: str
+    course_duration_weeks: int

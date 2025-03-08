@@ -22,7 +22,7 @@ PORT = int(os.getenv("PORT"))
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
-    print(request.state.urn)
+
     response_payload: dict = {
         "transactionUrn": request.state.urn,
         "responseMessage": "Bad or missing input.",

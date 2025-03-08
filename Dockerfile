@@ -9,16 +9,10 @@ ENV TZ=Asia/Kolkata
 # Install necessary dependencies
 RUN apt-get update && \
     apt-get install -y \
-    ntp \
-    libgl1-mesa-glx \
-    portaudio19-dev \
     curl \
     wget \
-    ffmpeg \
-    flac \
     gcc \
     g++ \
-    libsqlite3-dev \
     software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 

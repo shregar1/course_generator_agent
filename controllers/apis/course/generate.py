@@ -29,14 +29,13 @@ class GenerateCourseController(IController):
 
         self.logger.debug("Fetching request URN")
         self.urn = request.state.urn
-        self.user_id = getattr(request.state, "user_id", None)
-        self.logger = self.logger.bind(urn=self.urn, user_urn=self.user_urn, api_name=self.api_name)
+        self.logger = self.logger.bind(urn=self.urn, api_name=self.api_name)
         self.dictionary_utility = DictionaryUtility(urn=self.urn)
 
         try:
 
             self.logger.debug("Validating request")
-            self.request_payload = request_payload.model_dump()
+            self.request_payload = request_payload.dict()
             await self.validate_request(
                 urn=self.urn,
                 request_payload=self.request_payload,
@@ -48,7 +47,6 @@ class GenerateCourseController(IController):
             self.logger.debug("Running Generate Course service")
             Generate_Course_service = GenerateCourseService(
                 urn=self.urn,
-                user_urn=self.user_urn,
                 api_name=self.api_name
             )
             response_dto: BaseResponseDTO = await Generate_Course_service.run(
