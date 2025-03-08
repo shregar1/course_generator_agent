@@ -1,0 +1,22 @@
+# docker-compose.yml
+version: '3.8'
+
+networks:
+  cga_net:
+    driver: bridge
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8005"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+      - celery
+    networks:
+      - cga_net
