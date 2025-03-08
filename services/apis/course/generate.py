@@ -1,4 +1,6 @@
 import json
+
+from http import HTTPStatus
 from langchain.prompts import PromptTemplate
 from langgraph.graph import StateGraph, END
 
@@ -118,10 +120,34 @@ class GenerateCourseService(IService):
         self.workflow.set_entry_point("researcher")
         app = self.workflow.compile()
 
+        brief: str = data.get("brief")
+        if not brief:
+            raise BadInputError(
+                responseMessage="Invalid brief",
+                responseKey="error_invalid_brief",
+                http_status_code=HTTPStatus.BAD_REQUEST
+            )
+
+        target_audience: str = data.get("target_audience")
+        if not target_audience:
+            raise BadInputError(
+                responseMessage="Invalid target audience",
+                responseKey="error_invalid_target_audience",
+                http_status_code=HTTPStatus.BAD_REQUEST
+            )
+
+        course_duration_weeks: int = data.get("course_duration_weeks")
+        if not course_duration_weeks:
+            raise BadInputError(
+                responseMessage="Invalid course duration weeks",
+                responseKey="error_invalid_course_duration_weeks",
+                http_status_code=HTTPStatus.BAD_REQUEST
+            )
+
         initial_state = {
-            "brief": data["brief"],
-            "audience": data["target_audience"],
-            "duration": data["course_duration"],
+            "brief": brief,
+            "audience": target_audience,
+            "duration": f"{course_duration_weeks} weeks",
             "research_data": {},
             "course_structure": {},
             "full_course": {},
